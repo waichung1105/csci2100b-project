@@ -2,7 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
-#include <bits/stdc++.h>
+#include <algorithm>
 using namespace std;
 
 class TreeNode {
@@ -58,21 +58,11 @@ int minSearch(TreeNode* root){
     }
 }
 
-int strToInt(string s){
-    string res = "";
-    for (auto ch : s){
-        if (isdigit(ch)){
-            res += ch;
-        }
-    }
-    return stoi(res);
-}
-
 int main() {
 
     vector<int> key;
     ifstream myfile;
-    myfile.open("ds-half.txt");
+    myfile.open("ds.txt");
 
     int n;
     while (myfile >> n){
@@ -84,32 +74,23 @@ int main() {
     sort(key.begin(), key.end());
 
     TreeNode* root = bst(key, 0, key.size() - 1);
-    
+
     vector<int> target;
-    ifstream tar("qs-half.txt");
+    ifstream queryfile("qry.txt");
     string tmp;
+    ofstream outputfile("output.txt");
+    int min = minSearch(root);
 
-    while (getline(tar, tmp)){
-        int v = strToInt(tmp);
-        target.push_back(v);
-    }
-
-    ofstream out("output.txt");
-
-    int min = minSearch(root); 
-    // find min of the tree, help do predecessor search
-
-    for (auto i : target){  
-        if (i < min){
-            out << "no" << endl;
+    while (getline(queryfile, tmp)){
+        tmp = tmp.substr(4);
+        int v = stoi(tmp);
+        if (v < min){
+            outputfile << "no" << "\n";
         }
         else {
-            int predecessor = predecessorSearch(-2147483647, i, root);
-            out << predecessor << endl;
+            int predecessor = predecessorSearch(INT_MIN, v, root);
+            outputfile << predecessor << "\n";
         }
     }
-    // loop all the search value,
-    // write all the corresponding predecessor into output.txt
-
     return 0;
 }
