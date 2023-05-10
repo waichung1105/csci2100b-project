@@ -2,4 +2,4 @@
 
 Project of CSCI2100 Spring 2023
 
-Although I still have no idea what is the topic is.
+To implement a BST to support predecessor query
